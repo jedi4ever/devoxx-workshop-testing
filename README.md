@@ -17,9 +17,10 @@
 - A running docker container system. You can install <https://rancherdesktop.io/> if you don't have one.
 - Make sure to have enough bandwith to pull images from. Therefore not ideal to do this at conferences :)
 
+- Copy the `env.sample` to `.env` and fill in the keys you have available
 - Secrets should go into `.env` file:
     - `OPENAI_API_KEY="...."`
-- In VSCode this .env is loaded automatically
+- In VSCode the .env is loaded automatically, no need for dotenv in notebooks
 
 ### Launching the codespace
 - Lauching the link below will spin up a webbased VSCode with Github Copilot enabled
