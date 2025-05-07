@@ -1,0 +1,9 @@
+ipykernel
+ipywidgets
+# inspect-ai - to have fix for MCP server
+inspect-ai @ git+https://github.com/UKGovernmentBEIS/inspect_ai@c80438c2188b33b9834ea164f000881c627a2745
+openai
+colorama
+#mcp
+#mcp-server-git
+#datasets #for huggingface datasets

@@ -1,0 +1,46 @@
+# base image
+FROM aisiuk/inspect-tool-support
+
+# nodejs (required by mcp server)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# The image contains MCP support 
+# https://inspect.aisi.org.uk/tools-mcp.html#configuration
+# Install of MCP inspect support
+#ENV PATH="$PATH:/opt/inspect_tool_support/bin"
+#RUN python -m venv /opt/inspect_tool_support && \
+#    /opt/inspect_tool_support/bin/pip install inspect-tool-support && \
+#    /opt/inspect_tool_support/bin/inspect-tool-support post-install
+#RUN pip install inspect-tool-support
+#RUN inspect-tool-support post-install
+
+## Installation of CLI coding tools
+# Aider
+RUN pip install aider-chat
+RUN pip install playwright
+RUN python3 -m playwright install --with-deps chromium
+
+RUN npm install -g @modelcontextprotocol/server-filesystem
+# Claude code
+RUN npm install -g @anthropic-ai/claude-code
+# OpenAI codex
+# Invalid schema error: Missing 'workdir' in function 'shell'
+#RUN npm install -g @openai/codex@0.1.2504220136
+
+RUN npm install -g @openai/codex@0.1.2504211509
+
+# https://github.com/openai/codex/issues/156
+# Sandbox was mandated, but no sandbox is available
+# RUN npm install -g @openai/codex
+
+# Add additional MCP servers here to work in the sandbox container
+RUN pip install mcp-server-tree-sitter
+RUN pip install mcp-server-git
+
+# Allow for safe git operations
+RUN git config --global --add safe.directory /my-repo

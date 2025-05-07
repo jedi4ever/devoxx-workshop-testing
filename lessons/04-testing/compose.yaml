@@ -1,0 +1,17 @@
+services:
+  mcp: # this it the name of the sandbox
+      image: mymcp # this is the name of the image
+      command: tail -f /dev/null
+      init: true # makes it respond to signals , also speeds up container shutdown
+      pull_policy: missing # if image is not found, it will not try to pull it
+      x-local: true # indicates this is a local image, no need to pull
+      x-default: true # if not sandbox name specified in inspect , this one is used
+      environment:
+        OPENAI_API_KEY:  ${OPENAI_API_KEY}
+        ANTHROPIC_API_KEY:  ${ANTHROPIC_API_KEY}
+      build:
+        context: .
+        dockerfile: ./container/Dockerfile.mcp
+      volumes:
+        - ./my-repo:/my-repo # mount the local repo to the container
+        - ./tools:/tools # map local tools inside the container
