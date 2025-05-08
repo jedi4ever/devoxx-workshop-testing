@@ -59,11 +59,11 @@ def pretty_sample(sample: Sample,show_events=False):
 #    print(sample)
     output = []
 
-    output.append("======= Sample ========")
+    output.append("======= Sample Begin =================================================================")
     output.append(f"input : {sample.input}")
     output.append(f"target: {sample.target}")
 
-    output.append(20*"=")
+    output.append("======================================================================================")
     for message in sample.messages:
         message_output = pretty_message(message)
         output.extend(message_output)
@@ -91,23 +91,42 @@ def pretty_sample(sample: Sample,show_events=False):
                 case _:
                     output.append(event)
 
-    output.append("======== Score ======")
+    output.append("======== Score =======================================================================")
     for scorer, value in sample.scores.items():
         scorer_output = pretty_scorer(scorer,value)
         output.extend(scorer_output)
-    output.append(20*"=")
+    output.append("======================================================================================")
 
     return output
 
 def pretty_results(results: list[EvalLog],show_events=False):
     output = []
     for r in results:
-        output.append(r.location)
+        if is_notebook():
+            from IPython.display import HTML
+            from IPython.display import display as IPython_display
+            from IPython.display import HTML
+            IPython_display(HTML("""<a href="%s">%s</a>"""%(r.location, r.location)))
+        else:
+            output.append(r.location)
         print(f"Status: {r.status} Model: {r.eval.model}")
         for s in r.samples:
             sample_output = pretty_sample(s,show_events=show_events)
             output.extend(sample_output)
 
-        output.append(40*"**")
+        output.append("**** End Sample ******************************************************************")
 
     return "\n".join(output)
+
+# https://stackoverflow.com/questions/15411967/how-can-i-check-if-code-is-executed-in-the-ipython-notebook
+def is_notebook() -> bool:
+    try:
+        shell = get_ipython().__class__.__name__
+        if shell == 'ZMQInteractiveShell':
+            return True   # Jupyter notebook or qtconsole
+        elif shell == 'TerminalInteractiveShell':
+            return False  # Terminal running IPython
+        else:
+            return False  # Other type (?)
+    except NameError:
+        return False      # Probably standard Python interpreter
