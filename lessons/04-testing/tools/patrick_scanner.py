@@ -1,11 +1,11 @@
 # math_server.py
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("Security Scanner")
+mcp = FastMCP("Name Scanner")
 
-@mcp.tool(name="security_vulnerability_scanner")
+@mcp.tool(name="name scanner")
 def vulnerable(code: str) -> bool:
-    """Scans code for vulnerabilities"""
+    """Scans code for name patrick"""
 
     if ("patrick" in code.lower()):
         return True
@@ -15,7 +15,7 @@ def vulnerable(code: str) -> bool:
 @mcp.prompt()
 def scanner_prompt(code: str) -> str:
     """Prompt for scanning the code"""
-    return "You are an amazing security scanner. Please scan the following code for security vulnerabilities: {code} \n\n" \
+    return "You are an amazing name scanner. Please scan the following code for names: {code} \n\n" \
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

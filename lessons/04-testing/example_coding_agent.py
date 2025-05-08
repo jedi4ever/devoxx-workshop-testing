@@ -3,7 +3,7 @@ from helpers.reporter.pretty import pretty_results
 from inspect_ai import Task, task, eval
 from inspect_ai.dataset import Sample
 from inspect_ai.solver import system_message, generate
-from inspect_ai.scorer import includes, model_graded_fact
+from inspect_ai.scorer import includes, model_graded_fact, match, includes
 from textwrap import dedent
 
 from helpers.solver.aider_coder import aider_coder
@@ -27,7 +27,6 @@ The test should be in a file called hello-world.test.js. The test should check t
     ]
 
     repo_dir = "/my-repo/workshop"
-    repo_url = "https://github.com/jedi4ever/from-prompt-to-mcp.git"
 
     return Task(
         dataset=dataset,
@@ -41,7 +40,7 @@ The test should be in a file called hello-world.test.js. The test should check t
             script_exec(command=f"ls -l {repo_dir}"),
         ],
         scorer=[
-            # model_graded_fact(), 
+            # model_graded_fact(),
             command_results(cwd=repo_dir, cmd="node", cmd_args=["src/hello-world.js"], cmd_output="hello"),
             command_results(cwd=repo_dir, cmd="npm", cmd_args=["run","test"]),
         ],
@@ -50,7 +49,7 @@ The test should be in a file called hello-world.test.js. The test should check t
 
 if __name__ == "__main__":
     # Run the task
-    results = eval(coding_agent, max_steps=10,log_level="info", display="rich")
+    results = eval(coding_agent,log_level="info", display="rich")
 
     # Print the results
     #pretty_results(results)
